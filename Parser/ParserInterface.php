@@ -8,22 +8,22 @@ namespace Slince\Config\Parser;
 interface ParserInterface
 {
     /**
-     * 解析对应的配置媒介
-     * @param string $filePath
+     * Parse the configuration file to an array
+     * @param string $file
      * @return array
      */
-    function parse($filePath);
+    public function parse($file);
 
     /**
-     * 将数据持久化到配置文件
-     * @param string $filePath
+     * Dumps the data to the configuration file
+     * @param string $file
      * @param array $data
      */
-    function dump($filePath, array $data);
+    public function dump($file, array $data);
 
     /**
-     * 获取解析器支持的文件扩展名
+     * Gets all extensions that are supported by the parser
      * @return array
      */
-    static function getSupportedExtensions();
+    public static function getSupportedExtensions();
 }

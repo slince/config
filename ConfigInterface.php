@@ -8,22 +8,16 @@ namespace Slince\Config;
 interface ConfigInterface
 {
     /**
-     * 加载配置文件或者目录
+     * Loads a configuration file or directory
      * @param string|array $path
+     * @return $this
      */
-    function load($path);
+    public function load($path);
 
     /**
-     * 解析一个配置文件或者配置目录
-     * @param string|array $path
-     * @return array
-     */
-    function parse($path);
-
-    /**
-     * 将配置数据静态化到一个配置文件
-     * @param string $filePath
+     * Dumps all data to a configuration file
+     * @param string $file
      * @return boolean
      */
-    function dump($filePath);
+    public function dump($file);
 }

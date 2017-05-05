@@ -6,29 +6,29 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 
     private $_config;
 
-    function setUp()
+    public function setUp()
     {
         $this->_config = new Config();
     }
 
-    function tearDown()
+    public function tearDown()
     {
         unset($this->_config);
     }
 
-    function testMerge()
+    public function testMerge()
     {
         $this->_config->load(__DIR__ . '/config/config.json');
         $this->assertNotEmpty($this->_config->toArray());
     }
 
-    function testException()
+    public function testException()
     {
         $this->setExpectedException('Slince\Config\Exception\ParseException');
         $this->_config->load(__DIR__ . '/config/config2.json');
     }
 
-//     function testDump()
+//     public function testDump()
 //     {
 //         $this->_config->merge(new JsonFile(__DIR__ . '/config/config.json'));
 //         $this->_config->getDataObject()->set('key5', 'value5');

@@ -1,7 +1,9 @@
 {
     "name": "slince/config",
-    "description": "Slince config component",
-    "license": "Apache-2.0",
+    "description": "A flexible configuration file loader that supports multiple file formats and accessing deep data by dot notation",
+    "keywords": ["configuration", "config", "json", "yaml", "yml", "ini", "xml", "php", "dot access"],
+    "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Tao",
@@ -12,11 +14,11 @@
         "php": ">=5.5.9"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.2"
+        "phpunit/phpunit": "^4.0"
     },
     "autoload": {
         "psr-4": {
-            "Slince\\Config\\": ""
+            "Slince\\Config\\": "./"
         }
     }
 }

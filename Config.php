@@ -7,123 +7,121 @@ namespace Slince\Config;
 
 use Slince\Config\Exception\UnsupportedFormatException;
 use Slince\Config\Exception\InvalidFileException;
+use Slince\Config\Parser\IniParser;
+use Slince\Config\Parser\JsonParser;
 use Slince\Config\Parser\ParserInterface;
+use Slince\Config\Parser\PhpParser;
 
-class Config extends DataObject implements ConfigInterface
+class Config extends Collection implements ConfigInterface
 {
-
     /**
-     * 解析器实例
-     *
+     * Array of parser instances
      * @var array
      */
-    protected $parsers = [];
+    protected static $parsers = [];
 
     /**
-     * 支持的解析器类型
-     * 
+     * Array of supported file format parsers
      * @var array
      */
-    protected $supportFileParsers = [
-        'Slince\\Config\\Parser\\PhpParser',
-        'Slince\\Config\\Parser\\IniParser',
-        'Slince\\Config\\Parser\\JsonParser'
+    protected static $supportedFileParsers = [
+        PhpParser::class,
+        IniParser::class,
+        JsonParser::class
     ];
 
-    function __construct($path = null)
+    public function __construct($path = null)
     {
-        if (! is_null($path)) {
-            $this->load($path);
-        }
+        is_null($path) || $this->load($path);
     }
 
     /**
-     * 加载配置文件或者目录
-     * @param string|array $path
-     * @return $this
+     * {@inheritdoc}
      */
-    function load($path)
+    public function load($path)
     {
-        $paths = is_array($path) ? $path : [
-            $path
-        ];
+        $paths = is_array($path) ? $path : [$path];
         foreach ($paths as $path) {
-            $this->data = array_merge($this->data, $this->parse($path));
+            $this->data = array_replace($this->data, $this->parseFile($path));
         }
         return $this;
     }
 
     /**
-     * 解析一个配置文件或者配置目录
+     * {@inheritdoc}
+     */
+    public function dump($file)
+    {
+        $extension = pathinfo($file, PATHINFO_EXTENSION);
+        return static::getParser($extension)->dump($file, $this->toArray());
+    }
+
+    /**
+     * Parse a configuration file or directory to an array
      * @param string|array $path
      * @return array
+     * @deprecated
      */
-    function parse($path)
+    public function parse($path)
+    {
+        return $this->parseFile($path);
+    }
+
+    /**
+     * Parses a configuration file or directory
+     * @param string $path
+     * @return array
+     */
+    protected function parseFile($path)
     {
         $data = [];
-        $filePaths = $this->getFilePath($path);
-        foreach ($filePaths as $filePath) {
-            $extension = pathinfo($filePath, PATHINFO_EXTENSION);
-            $data = array_merge($data, $this->getParser($extension)->parse($filePath));
+        $files = $this->findConfigurationFiles($path);
+        foreach ($files as $file) {
+            $extension = pathinfo($file, PATHINFO_EXTENSION);
+            $data = array_merge($data, static::getParser($extension)->parse($file));
         }
         return $data;
     }
 
     /**
-     * 将配置数据静态化到一个配置文件
-     * @param string $filePath
-     * @return boolean
-     */
-    function dump($filePath)
-    {
-        $extension = pathinfo($filePath, PATHINFO_EXTENSION);
-        $parser = $this->getParser($extension);
-        return $parser->dump($filePath, $this->toArray());
-    }
-
-    /**
-     * 获取配置文件或者配置目录下的合法文件
-     * 
-     * @param string|array $path            
+     * finds all supported configuration files at the directory
+     * @param string $path
      * @throws InvalidFileException
      * @return array
      */
-    function getFilePath($path)
+    protected function findConfigurationFiles($path)
     {
         if (is_dir($path)) {
-            $paths = glob($path . '/*.*');
-            if (empty($paths)) {
-                throw new InvalidFileException(sprintf('Directory "%s" is empty', $path));
+            $files = glob($path . '/*.*');
+            if (empty($files)) {
+                throw new InvalidFileException(sprintf('There are no supported configuration files in the directory "%s"', $path));
             }
         } else {
             if (!file_exists($path)) {
-                throw new InvalidFileException(sprintf('File "%s" cannot be found', $path));
-            } else {
-                $paths = [$path];
+                throw new InvalidFileException(sprintf('File "%s" does not exists', $path));
             }
+            $files = [$path];
         }
-        return $paths;
+        return $files;
     }
 
     /**
-     * 根据扩展名获取文件解析器
-     * 
-     * @param string $extension            
+     * Gets a file parser by its extension
+     * @param string $extension
      * @throws UnsupportedFormatException
      * @return ParserInterface
      */
-    function getParser($extension)
+    protected static function getParser($extension)
     {
-        //如果已经生成直接返回
-        if (isset($this->parsers[$extension])) {
-            return $this->parsers[$extension];
+        if (isset(static::$parsers[$extension])) {
+            return static::$parsers[$extension];
         }
-        foreach ($this->supportFileParsers as $fileParser) {
-            if (in_array($extension, call_user_func([$fileParser, 'getSupportedExtensions']))) {
-                $this->parsers[$extension] = new $fileParser();
-                return $this->parsers[$extension];
+        foreach (static::$supportedFileParsers as $parser) {
+            if (in_array($extension, call_user_func([$parser, 'getSupportedExtensions']))) {
+                static::$parsers[$extension] = new $parser();
+                return static::$parsers[$extension];
             }
         }
-        throw new UnsupportedFormatException('Unsupported configuration format');
+        throw new UnsupportedFormatException($extension);
     }
 }

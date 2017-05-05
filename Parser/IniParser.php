@@ -7,39 +7,30 @@ namespace Slince\Config\Parser;
 
 use Slince\Config\Exception\ParseException;
 
-class IniParser extends AbstractParser
+class IniParser implements ParserInterface
 {
-
     /**
-     * 解析对应的配置媒介
-     * @param string $filePath
-     * @throws ParseException
-     * @return array
+     * {@inheritdoc}
      */
-    function parse($filePath)
+    public function parse($file)
     {
-        if (($data = @parse_ini_file($filePath, true)) === false) {
-            throw new ParseException(sprintf('The file "%s" has syntax errors', $filePath));
+        if (($data = @parse_ini_file($file, true)) === false) {
+            throw new ParseException(sprintf('The file "%s" has syntax errors', $file));
         } else {
             return $data;
         }
     }
 
     /**
-     * 将数据持久化到配置文件
-     * @param string $filePath
-     * @param array $data
-     * @throws ParseException
-     * @return boolean
+     * {@inheritdoc}
      */
-    function dump($filePath, array $data)
+    public function dump($filePath, array $data)
     {
         throw new ParseException('Not supported');
     }
     
     /**
-     * 获取解析器支持的文件扩展名
-     * @return array
+     * {@inheritdoc}
      */
     static function getSupportedExtensions()
     {
