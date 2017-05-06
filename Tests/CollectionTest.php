@@ -23,7 +23,7 @@ class CollectionTest extends TestCase
         $collection = new Collection([
             'foo' => 'bar'
         ]);
-        $this->assertCount(1, $collection->count());
+        $this->assertEquals(1, $collection->count());
         $this->assertCount(1, $collection);
     }
 
@@ -96,7 +96,5 @@ class CollectionTest extends TestCase
             ]
         ]);
         $this->assertEquals('baz', $collection['foo']['bar']['baz']['foo']['bar']);
-        $collection['foo']['bar']['baz']['foo']['bar'] = 'foo';
-        $this->assertEquals('foo', $collection['foo']['bar']['baz']['foo']['bar']);
     }
 }

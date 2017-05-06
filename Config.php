@@ -10,7 +10,7 @@ use Slince\Config\Exception\InvalidFileException;
 use Slince\Config\Parser\IniParser;
 use Slince\Config\Parser\JsonParser;
 use Slince\Config\Parser\ParserInterface;
-use Slince\Config\Parser\PhpParser;
+use Slince\Config\Parser\PHPParser;
 
 class Config extends Collection implements ConfigInterface
 {
@@ -25,7 +25,7 @@ class Config extends Collection implements ConfigInterface
      * @var array
      */
     protected static $supportedFileParsers = [
-        PhpParser::class,
+        PHPParser::class,
         IniParser::class,
         JsonParser::class
     ];

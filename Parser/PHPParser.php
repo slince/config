@@ -7,16 +7,16 @@ namespace Slince\Config\Parser;
 
 use Slince\Config\Exception\ParseException;
 
-class PhpParser implements ParserInterface
+class PHPParser implements ParserInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function parse($filePath)
+    public function parse($file)
     {
-        $data = include $filePath;
-        if (! is_array($data)) {
-            throw new ParseException(sprintf('The file "%s" must return a PHP array', $filePath));
+        $data = include $file;
+        if (!is_array($data)) {
+            throw new ParseException(sprintf('The file "%s" must return a PHP array', $file));
         }
         return $data;
     }
@@ -24,14 +24,15 @@ class PhpParser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function dump($filePath, array $data)
+    public function dump($file, array $data)
     {
         $value = var_export($data, true);
 $string = <<<EOT
 <?php 
 return {$value};
 EOT;
-        return @file_put_contents($filePath, $string) !== false;
+        @mkdir(dirname($file), 0777, true);
+        return @file_put_contents($file, $string) !== false;
     }
 
     /**
