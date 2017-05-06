@@ -43,7 +43,7 @@ class Config extends Collection implements ConfigInterface
     {
         $paths = is_array($path) ? $path : [$path];
         foreach ($paths as $path) {
-            $this->merge($this->parseFile($path));
+            $this->merge($this->parseConfiguration($path));
         }
         return $this;
     }
@@ -59,24 +59,24 @@ class Config extends Collection implements ConfigInterface
 
     /**
      * Parse a configuration file or directory to an array
-     * @param string|array $path
+     * @param string $path
      * @return array
      * @deprecated
      */
     public function parse($path)
     {
-        return $this->parseFile($path);
+        return $this->parseConfiguration($path);
     }
 
     /**
-     * Parses a configuration file or directory
+     * Parse a configuration file or directory to an array
      * @param string $path
      * @return array
      */
-    protected function parseFile($path)
+    protected function parseConfiguration($path)
     {
-        $data = [];
         $files = $this->findConfigurationFiles($path);
+        $data = [];
         foreach ($files as $file) {
             $extension = pathinfo($file, PATHINFO_EXTENSION);
             $data = array_merge($data, static::getParser($extension)->parse($file));
@@ -95,7 +95,7 @@ class Config extends Collection implements ConfigInterface
         if (is_dir($path)) {
             $files = glob($path . '/*.*');
             if (empty($files)) {
-                throw new InvalidFileException(sprintf('There are no supported configuration files in the directory "%s"', $path));
+                throw new InvalidFileException(sprintf('There is no configuration file in the directory "%s"', $path));
             }
         } else {
             if (!file_exists($path)) {

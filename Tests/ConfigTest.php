@@ -68,6 +68,6 @@ class ConfigTest extends TestCase
     public function testUnsupportedFormat()
     {
         $this->setExpectedException(UnsupportedFormatException::class);
-        $config = new Config(__DIR__ . '/Fixtures/config.ext');
+        new Config(__DIR__ . '/Fixtures/config.ext');
     }
 }

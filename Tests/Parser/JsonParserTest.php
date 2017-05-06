@@ -25,15 +25,15 @@ class JsonParserTest extends TestCase
         (new JsonParser())->parse(__DIR__ . '/../Fixtures/syntax_error_json_file.json');
     }
 
-     public function testDump()
-     {
-         $parser = new JsonParser();
-         $file = __DIR__ . '/../Tmp/json-dump.json';
-         $this->assertTrue($parser->dump($file, [
-             'foo' => 'bar'
-         ]));
-         $this->assertEquals([
-             'foo' => 'bar'
-         ], $parser->parse($file));
-     }
+    public function testDump()
+    {
+        $parser = new JsonParser();
+        $file = __DIR__ . '/../Tmp/json-dump.json';
+        $this->assertTrue($parser->dump($file, [
+           'foo' => 'bar'
+        ]));
+        $this->assertEquals([
+           'foo' => 'bar'
+        ], $parser->parse($file));
+    }
 }

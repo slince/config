@@ -41,7 +41,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     /**
      * Gets the value by the specified key
      * @param int|string $key
-     * @param mixed $defaultValue            
+     * @param mixed $defaultValue
      * @return mixed
      */
     public function get($key, $defaultValue = null)

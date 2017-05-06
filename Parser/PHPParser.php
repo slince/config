@@ -27,7 +27,7 @@ class PHPParser implements ParserInterface
     public function dump($file, array $data)
     {
         $value = var_export($data, true);
-$string = <<<EOT
+        $string = <<<EOT
 <?php 
 return {$value};
 EOT;
