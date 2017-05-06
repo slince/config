@@ -2,7 +2,6 @@
 namespace Slince\Config\Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
-use Slince\Config\Config;
 use Slince\Config\Exception\ParseException;
 use Slince\Config\Parser\PHPParser;
 

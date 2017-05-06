@@ -33,7 +33,7 @@ class ConfigTest extends TestCase
     {
         $config = new Config();
         $config->load(__DIR__ . '/Fixtures/config.php');
-        $targetFile = __DIR__ . '/Tmp/config.php';
+        $targetFile = __DIR__ . '/Tmp/config-dump.php';
         $this->assertTrue($config->dump($targetFile));
         $this->assertEquals($config->toArray(), (new Config($targetFile))->toArray());
     }
@@ -42,7 +42,7 @@ class ConfigTest extends TestCase
     {
         $config = new Config();
         $config->load(__DIR__ . '/Fixtures/config.php');
-        $targetFile = __DIR__ . '/Tmp/config.ini';
+        $targetFile = __DIR__ . '/Tmp/config-dump.ini';
         $this->setExpectedException(ParseException::class);
         $config->dump($targetFile);
     }
@@ -51,7 +51,7 @@ class ConfigTest extends TestCase
     {
         $config = new Config();
         $config->load(__DIR__ . '/Fixtures/config.php');
-        $targetFile = __DIR__ . '/Tmp/config.json';
+        $targetFile = __DIR__ . '/Tmp/config-dump.json';
         $this->assertTrue($config->dump($targetFile));
         $this->assertEquals($config->toArray(), (new Config($targetFile))->toArray());
     }

@@ -16,16 +16,14 @@ class IniParserTest extends TestCase
 
     public function testException()
     {
-        $parser = new IniParser();
         $this->setExpectedException(ParseException::class);
-        $parser->parse(__DIR__ . '/../Fixtures/syntax_error_ini_file.ini');
+        (new IniParser())->parse(__DIR__ . '/../Fixtures/syntax_error_ini_file.ini');
     }
 
     public function testDump()
     {
-        $parser = new IniParser();
         $this->setExpectedException(ParseException::class);
-        $parser->dump(__DIR__ . '/../Tmp/ini-dump.ini', [
+        (new IniParser())->dump(__DIR__ . '/../Tmp/ini-dump.ini', [
             'foo' => 'bar'
         ]);
     }

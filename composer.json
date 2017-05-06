@@ -1,7 +1,7 @@
 {
     "name": "slince/config",
-    "description": "A flexible configuration file loader that supports multiple file formats and accessing deep data by dot notation",
-    "keywords": ["configuration", "config", "json", "yaml", "yml", "ini", "xml", "php", "dot access"],
+    "description": "A flexible configuration file loader that supports multiple file formats",
+    "keywords": ["configuration", "config", "json", "yaml", "yml", "ini", "xml", "php"],
     "type": "library",
     "license": "MIT",
     "authors": [
