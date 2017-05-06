@@ -32,6 +32,7 @@ class Config extends Collection implements ConfigInterface
 
     public function __construct($path = null)
     {
+        parent::__construct([]);
         is_null($path) || $this->load($path);
     }
 
@@ -42,7 +43,7 @@ class Config extends Collection implements ConfigInterface
     {
         $paths = is_array($path) ? $path : [$path];
         foreach ($paths as $path) {
-            $this->data = array_replace($this->data, $this->parseFile($path));
+            $this->merge($this->parseFile($path));
         }
         return $this;
     }

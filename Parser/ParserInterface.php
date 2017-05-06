@@ -18,6 +18,7 @@ interface ParserInterface
      * Dumps the data to the configuration file
      * @param string $file
      * @param array $data
+     * @return boolean
      */
     public function dump($file, array $data);
 

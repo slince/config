@@ -8,15 +8,18 @@ namespace Slince\Config;
 class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
-     * 配置的值
-     *
+     * Array of data
      * @var array
      */
-    protected $data = [];
+    protected $data;
+
+    public function __construct(array $data = [])
+    {
+        $this->data = $data;
+    }
 
     /**
-     * 输出当前对象中保存的配置值
-     *
+     * Returns data
      * @return array
      */
     public function toArray()
@@ -25,20 +28,9 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * 替换当前数据
-     * 
-     * @param array $data            
-     */
-    public function replace(array $data)
-    {
-        $this->data = $data;
-    }
-
-    /**
-     * 设置新的配置值，已存在的键值将会被覆盖
-     *
-     * @param int|string $key            
-     * @param mixed $value            
+     * Sets a item with its key and value
+     * @param int|string $key
+     * @param mixed $value
      * @return void
      */
     public function set($key, $value)
@@ -47,9 +39,8 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * 获取某个键值对应的参数
-     *
-     * @param int|string $key            
+     * Gets the value by the specified key
+     * @param int|string $key
      * @param mixed $defaultValue            
      * @return mixed
      */
@@ -59,17 +50,16 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * 批量合并
-     * 
-     * @param array $data            
+     * Merges a array to the collection
+     * @param array $data
      */
     public function merge(array $data)
     {
-        $this->data = array_merge($this->data, $data);
+        $this->data = array_replace($this->data, $data);
     }
 
     /**
-     * 判断是否存在某个键值
+     * Checks whether the item exists
      * @param int|string $key
      * @return boolean
      */
@@ -79,7 +69,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * 移除已存在的键值
+     * Remove a item by its key
      * @param mixed $key
      */
     public function delete($key)
@@ -88,19 +78,24 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * 清除所有的数据
-     * @return void
+     * Clears the collection
      */
-    public function flush()
+    public function clear()
     {
         $this->data = [];
     }
 
+    /**
+     * Clears the collection
+     * @deprecated
+     */
+    public function flush()
+    {
+        $this->clear();
+    }
 
     /**
-     * 继承方法
-     * @param mixed $offset
-     * @return mixed
+     * {@inheritdoc}
      */
     public function offsetGet($offset)
     {
@@ -108,9 +103,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * 继承方法
-     * @param mixed $offset
-     * @param mixed $value
+     * {@inheritdoc}
      */
     public function offsetSet($offset, $value)
     {
@@ -118,8 +111,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * 继承方法
-     * @param mixed $offset
+     * {@inheritdoc}
      */
     public function offsetUnset($offset)
     {
@@ -127,9 +119,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * 继承方法
-     * @param mixed $offset
-     * @return bool
+     * {@inheritdoc}
      */
     public function offsetExists($offset)
     {
@@ -138,8 +128,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
 
 
     /**
-     * 继承方法
-     * @return mixed
+     * {@inheritdoc}
      */
     public function count()
     {
@@ -147,8 +136,7 @@ class Collection implements \ArrayAccess, \Countable, \IteratorAggregate
     }
 
     /**
-     * 继承方法
-     * @return \ArrayIterator
+     * {@inheritdoc}
      */
     public function getIterator()
     {
