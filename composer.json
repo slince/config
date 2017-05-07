@@ -20,5 +20,9 @@
         "psr-4": {
             "Slince\\Config\\": "./"
         }
+    },
+    "suggest": {
+        "openlss/lib-array2xml": "requires for parsing xml file",
+        "symfony/yaml": "Requires for parsing yaml file"
     }
 }

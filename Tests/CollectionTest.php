@@ -48,6 +48,17 @@ class CollectionTest extends TestCase
         $this->assertEquals('baz', $collection->get('bar'));
     }
 
+    public function testMerge()
+    {
+        $collection = new Collection([
+            'foo' => 'bar'
+        ]);
+        $collection->merge([
+            'foo' => 'baz'
+        ]);
+        $this->assertEquals('baz', $collection->get('foo'));
+    }
+
     public function testExists()
     {
         $collection = new Collection([

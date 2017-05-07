@@ -29,10 +29,31 @@ class ConfigTest extends TestCase
         $this->assertEquals('bar', $config->get('foo'));
     }
 
+    public function testLoadXmlFile()
+    {
+        $config = new Config();
+        $config->load(__DIR__ . '/Fixtures/config.xml');
+        $this->assertEquals('bar', $config['foo']);
+    }
+
+    public function testLoadYamlFile()
+    {
+        $config = new Config();
+        $config->load(__DIR__ . '/Fixtures/config.yml');
+        $this->assertEquals('bar', $config->get('foo'));
+    }
+
     public function testDumpPHPFile()
     {
         $config = new Config();
-        $config->load(__DIR__ . '/Fixtures/config.php');
+        $config->merge([
+            'foo' => 'bar',
+            'bar' => [
+                'foo',
+                'bar',
+                'baz'
+            ]
+        ]);
         $targetFile = __DIR__ . '/Tmp/config-dump.php';
         $this->assertTrue($config->dump($targetFile));
         $this->assertEquals($config->toArray(), (new Config($targetFile))->toArray());
@@ -41,7 +62,14 @@ class ConfigTest extends TestCase
     public function testDumpIniFile()
     {
         $config = new Config();
-        $config->load(__DIR__ . '/Fixtures/config.php');
+        $config->merge([
+            'foo' => 'bar',
+            'bar' => [
+                'foo',
+                'bar',
+                'baz'
+            ]
+        ]);
         $targetFile = __DIR__ . '/Tmp/config-dump.ini';
         $this->setExpectedException(ParseException::class);
         $config->dump($targetFile);
@@ -50,8 +78,47 @@ class ConfigTest extends TestCase
     public function testDumpJsonFile()
     {
         $config = new Config();
-        $config->load(__DIR__ . '/Fixtures/config.php');
+        $config->merge([
+            'foo' => 'bar',
+            'bar' => [
+                'foo',
+                'bar',
+                'baz'
+            ]
+        ]);
         $targetFile = __DIR__ . '/Tmp/config-dump.json';
+        $this->assertTrue($config->dump($targetFile));
+        $this->assertEquals($config->toArray(), (new Config($targetFile))->toArray());
+    }
+
+    public function testDumpXmlFile()
+    {
+        $config = new Config();
+        $config->merge([
+            'foo' => 'bar',
+            'bar' => [
+                'foo',
+                'bar',
+                'baz'
+            ]
+        ]);
+        $targetFile = __DIR__ . '/Tmp/config-dump.xml';
+        $this->assertTrue($config->dump($targetFile));
+        $this->assertEquals($config->toArray(), (new Config($targetFile))->toArray());
+    }
+
+    public function testDumpYamlFile()
+    {
+        $config = new Config();
+        $config->merge([
+            'foo' => 'bar',
+            'bar' => [
+                'foo',
+                'bar',
+                'baz'
+            ]
+        ]);
+        $targetFile = __DIR__ . '/Tmp/config-dump.yaml';
         $this->assertTrue($config->dump($targetFile));
         $this->assertEquals($config->toArray(), (new Config($targetFile))->toArray());
     }

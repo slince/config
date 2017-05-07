@@ -2,16 +2,15 @@
 namespace Slince\Config\Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
+use Slince\Config\Parser\XmlParser;
 use Slince\Config\Exception\ParseException;
-use Slince\Config\Parser\JsonParser;
 
-class JsonParserTest extends TestCase
+class XmlParserTest extends TestCase
 {
-
     public function testParse()
     {
-        $parser = new JsonParser();
-        $data = $parser->parse(__DIR__ . '/../Fixtures/config.json');
+        $parser = new XmlParser();
+        $data = $parser->parse(__DIR__ . '/../Fixtures/config.xml');
         $this->assertEquals([
             'foo' => 'bar',
             'bar' => 'baz',
@@ -21,18 +20,18 @@ class JsonParserTest extends TestCase
     public function testException()
     {
         $this->setExpectedException(ParseException::class);
-        (new JsonParser())->parse(__DIR__ . '/../Fixtures/syntax_error_json_file.json');
+        (new XmlParser())->parse(__DIR__ . '/../Fixtures/syntax_error_xml_file.xml');
     }
 
     public function testDump()
     {
-        $parser = new JsonParser();
-        $file = __DIR__ . '/../Tmp/json-dump.json';
+        $parser = new XmlParser();
+        $file = __DIR__ . '/../Tmp/xml-dump.xml';
         $this->assertTrue($parser->dump($file, [
-           'foo' => 'bar'
+            'foo' => 'bar'
         ]));
         $this->assertEquals([
-           'foo' => 'bar'
+            'foo' => 'bar'
         ], $parser->parse($file));
     }
 }

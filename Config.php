@@ -11,6 +11,8 @@ use Slince\Config\Parser\IniParser;
 use Slince\Config\Parser\JsonParser;
 use Slince\Config\Parser\ParserInterface;
 use Slince\Config\Parser\PHPParser;
+use Slince\Config\Parser\XmlParser;
+use Slince\Config\Parser\YamlParser;
 
 class Config extends Collection implements ConfigInterface
 {
@@ -27,7 +29,9 @@ class Config extends Collection implements ConfigInterface
     protected static $supportedFileParsers = [
         PHPParser::class,
         IniParser::class,
-        JsonParser::class
+        JsonParser::class,
+        XmlParser::class,
+        YamlParser::class
     ];
 
     public function __construct($path = null)
@@ -66,6 +70,17 @@ class Config extends Collection implements ConfigInterface
     public function parse($path)
     {
         return $this->parseConfiguration($path);
+    }
+
+    /**
+     * Add a custom parser
+     * @param ParserInterface $parser
+     */
+    public static function addParser(ParserInterface $parser)
+    {
+        foreach ($parser::getSupportedExtensions() as $extension) {
+            static::$parsers[$extension] = $parser;
+        }
     }
 
     /**
