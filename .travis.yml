@@ -7,10 +7,8 @@ php:
   - 7.1
 
 before_script:
-  - composer self-update
-  - composer install
-  - composer require openlss/lib-array2xml --dev
-  - composer require symfony/yaml --dev
+  - travis_retry composer self-update
+  - travis_retry composer install --no-interaction --prefer-source
 
 script: ./vendor/bin/phpunit  --coverage-clover=coverage.xml
 
