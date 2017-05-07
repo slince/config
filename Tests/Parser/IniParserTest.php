@@ -43,4 +43,43 @@ class IniParserTest extends TestCase
             ]
         ], $parser->parse($file));
     }
+
+    public function testWriteToString()
+    {
+        $config = array(
+            'Section 1' => array(
+                'foo' => 'bar',
+                'bool_true' => true,
+                'bool_false' => false,
+                'int' => 10,
+                'float' => 10.3,
+                'array' => array(
+                    'string',
+                    10.3,
+                    true,
+                    false,
+                ),
+            ),
+            'Section 2' => array(
+                'foo' => 'bar',
+            ),
+        );
+        $expected = <<<EOT
+[Section 1]
+foo = "bar"
+bool_true = 1
+bool_false = 0
+int = 10
+float = 10.3
+array[] = "string"
+array[] = 10.3
+array[] = 1
+array[] = 0
+
+[Section 2]
+foo = "bar"
+EOT;
+        $this->assertEquals(parse_ini_string($expected, true),
+            parse_ini_string(IniParser::writeToString($config), true));
+    }
 }

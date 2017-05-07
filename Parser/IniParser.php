@@ -70,10 +70,10 @@ class IniParser implements ParserInterface
                 }
                 if (is_array($value)) {
                     foreach ($value as $currentValue) {
-                        $ini .= $option . '[] = ' . static::formatValue($currentValue) . "\n";
+                        $ini .= $option . '[] = ' . static::escapeValue($currentValue) . "\n";
                     }
                 } else {
-                    $ini .= $option . ' = ' . static::formatValue($value) . "\n";
+                    $ini .= $option . ' = ' . static::escapeValue($value) . "\n";
                 }
             }
             $ini .= "\n";
@@ -86,7 +86,7 @@ class IniParser implements ParserInterface
      * @param $value
      * @return int|string
      */
-    protected static function formatValue($value)
+    protected static function escapeValue($value)
     {
         if (is_bool($value)) {
             return (int) $value;
@@ -100,7 +100,7 @@ class IniParser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    static function getSupportedExtensions()
+    public static function getSupportedExtensions()
     {
         return ['ini'];
     }

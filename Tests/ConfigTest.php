@@ -4,6 +4,7 @@ namespace Slince\Config\Tests;
 use PHPUnit\Framework\TestCase;
 use Slince\Config\Config;
 use Slince\Config\Exception\UnsupportedFormatException;
+use Slince\Config\Parser\ParserInterface;
 
 class ConfigTest extends TestCase
 {
@@ -136,5 +137,32 @@ class ConfigTest extends TestCase
     {
         $this->setExpectedException(UnsupportedFormatException::class);
         new Config(__DIR__ . '/Fixtures/config.ext');
+    }
+
+    public function testAddParser()
+    {
+        Config::addParser(new FooParser());
+        $config = new Config();
+        $config->load(__DIR__ . '/Fixtures/config.ext');
+        $this->assertEquals('baz', $config->get('foo'));
+    }
+}
+
+class FooParser implements ParserInterface
+{
+    public function parse($file)
+    {
+        return [
+            'foo' => 'baz'
+        ];
+    }
+
+    public function dump($file, array $data)
+    {
+    }
+
+    public static function getSupportedExtensions()
+    {
+        return ['ext'];
     }
 }

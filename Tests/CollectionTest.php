@@ -108,4 +108,19 @@ class CollectionTest extends TestCase
         ]);
         $this->assertEquals('baz', $collection['foo']['bar']['baz']['foo']['bar']);
     }
+
+    public function testIterator()
+    {
+        $collection = new Collection([
+            'foo' => 'bar',
+            'bar' => 'baz'
+        ]);
+        foreach ($collection as $key => $value) {
+            if ($key == 'foo') {
+                $this->assertEquals('bar', $value);
+            } elseif ($key == 'bar') {
+                $this->assertEquals('baz', $value);
+            }
+        }
+    }
 }
