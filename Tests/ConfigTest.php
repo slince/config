@@ -3,6 +3,7 @@ namespace Slince\Config\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Slince\Config\Config;
+use Slince\Config\Exception\InvalidFileException;
 use Slince\Config\Exception\UnsupportedFormatException;
 use Slince\Config\Parser\ParserInterface;
 
@@ -137,6 +138,12 @@ class ConfigTest extends TestCase
     {
         $this->setExpectedException(UnsupportedFormatException::class);
         new Config(__DIR__ . '/Fixtures/config.ext');
+    }
+
+    public function testInvalidFile()
+    {
+        $this->setExpectedException(InvalidFileException::class);
+        new Config(__DIR__ . '/Fixtures/file-not-exists');
     }
 
     public function testAddParser()

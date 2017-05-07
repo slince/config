@@ -20,7 +20,7 @@ class YamlParserTest extends TestCase
     public function testException()
     {
         $this->setExpectedException(ParseException::class);
-        (new YamlParser())->parse(__DIR__ . '/../Fixtures/syntax_error_json_file.json');
+        (new YamlParser())->parse(__DIR__ . '/../Fixtures/syntax_yml_file.yml');
     }
 
     public function testDump()
