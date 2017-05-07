@@ -11,7 +11,7 @@ class IniParserTest extends TestCase
     {
         $parser = new IniParser();
         $data = $parser->parse(__DIR__ . '/../Fixtures/config.ini');
-        $this->assertEquals('bar', $data['foo']);
+        $this->assertEquals('baz', $data['foo']['bar']);
     }
 
     public function testException()
@@ -22,9 +22,25 @@ class IniParserTest extends TestCase
 
     public function testDump()
     {
-        $this->setExpectedException(ParseException::class);
-        (new IniParser())->dump(__DIR__ . '/../Tmp/ini-dump.ini', [
-            'foo' => 'bar'
-        ]);
+        $parser = new IniParser();
+        $file = __DIR__ . '/../Tmp/ini-dump.ini';
+        $this->assertTrue($parser->dump($file, [
+            'foo' => [
+                'bar' => [
+                    'foo',
+                    'bar',
+                    'baz'
+                ]
+            ]
+        ]));
+        $this->assertEquals([
+            'foo' => [
+                'bar' => [
+                    'foo',
+                    'bar',
+                    'baz'
+                ]
+            ]
+        ], $parser->parse($file));
     }
 }

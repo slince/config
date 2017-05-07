@@ -10,6 +10,10 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlParser implements ParserInterface
 {
+    /**
+     * Whether supports native function
+     * @var boolean
+     */
     protected static $supportNative;
 
     public function __construct()

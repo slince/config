@@ -3,7 +3,6 @@ namespace Slince\Config\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Slince\Config\Config;
-use Slince\Config\Exception\ParseException;
 use Slince\Config\Exception\UnsupportedFormatException;
 
 class ConfigTest extends TestCase
@@ -19,7 +18,7 @@ class ConfigTest extends TestCase
     {
         $config = new Config();
         $config->load(__DIR__ . '/Fixtures/config.ini');
-        $this->assertEquals('bar', $config->get('foo'));
+        $this->assertEquals('baz', $config['foo']['bar']);
     }
 
     public function testLoadJsonFile()
@@ -63,16 +62,17 @@ class ConfigTest extends TestCase
     {
         $config = new Config();
         $config->merge([
-            'foo' => 'bar',
-            'bar' => [
-                'foo',
-                'bar',
-                'baz'
+            'foo' => [
+                'bar' => [
+                    'foo',
+                    'bar',
+                    'baz'
+                ]
             ]
         ]);
         $targetFile = __DIR__ . '/Tmp/config-dump.ini';
-        $this->setExpectedException(ParseException::class);
-        $config->dump($targetFile);
+        $this->assertTrue($config->dump($targetFile));
+        $this->assertEquals($config->toArray(), (new Config($targetFile))->toArray());
     }
 
     public function testDumpJsonFile()
