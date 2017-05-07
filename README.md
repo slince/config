@@ -5,7 +5,9 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/slince/config.svg?style=flat-square&label=stable)](https://packagist.org/packages/slince/config)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/slince/config.svg?style=flat-square)](https://scrutinizer-ci.com/g/slince/config/?branch=master)
 
-The library support multiple configuration file formats like json,ini and php array.
+The library support multiple configuration file formats like json,ini,xml,yaml and native php array. It can also help to dump 
+items to the specified configuration file.
+
 ### Installation
 
 Install via composer
