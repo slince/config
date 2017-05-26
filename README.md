@@ -12,10 +12,10 @@ items to the specified configuration file.
 
 Install via composer
 
-```shell
+```json
 {
     "require": {
-        "slince/config": "*"
+        "slince/config": "^1.0"
     }
 }
 ```
@@ -24,7 +24,7 @@ Install via composer
 
 #### Creates a config instance
 
-```
+```php
 $config = new Slince\Config\Config();
 ```
 
@@ -32,13 +32,13 @@ $config = new Slince\Config\Config();
 
 Loads a configuration file
 
-```
+```php
 $config->load('/path/to/config.json');
 ```
 
 Loads a directory that contains multiple files
 
-```
+```php
 $config->load('/path/to/config-directory/');
 ```
 > Notes: The directory can't contain unsupported files.
@@ -46,7 +46,7 @@ $config->load('/path/to/config-directory/');
 
 ### Access data
 
-```
+```php
 $config->get('foo');
 
 //Or access the data like array
@@ -55,16 +55,16 @@ $config['foo']['bar'];
 
 Checks whether a item exists by its key
 
-```
+```php
 echo $config->exists('foo');
 
 //or like array
 echo isset($config['foo']);
 ```
 
-Adds a item
+Adds a item to the container
 
-```
+```php
 $config->set('bar', 'baz');
 
 //or like array
@@ -73,7 +73,7 @@ $config['bar'] = 'baz';
 
 Removes a item by its key
 
-```
+```php
 $config->delete('bar');
 
 //or like array
@@ -82,13 +82,13 @@ unset($config['bar']);
 
 Removes all items
 
-```
+```php
 $config->clear();
 ```
 
 #### Dumps all items to an specified configuration file
 
-```
+```php
 $config->dump('/path/to/config-dump.php');
 ```
 
